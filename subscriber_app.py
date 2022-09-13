@@ -20,6 +20,9 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client1, userdata, message):
     cipher_key = b'70JZaJg4c5F7RIOhrSXNjq0Y0iGp1QtBy2gyVMSdHHY='
     cipher = Fernet(cipher_key)
+    print("cipher = ", cipher)
+    print("message = ", message)
+    print("message payload = ", message.payload)
     decrypted_message = cipher.decrypt(message.payload)
     msg=int(decrypted_message.decode("utf-8"))
     print("\nTotal Units = ",str(decrypted_message.decode("utf-8")))
@@ -34,24 +37,20 @@ def on_message(client1, userdata, message):
 def pub(client,topic,msg,qos,p_msg):
     logging.info(p_msg + msg+ "  topic= "+topic +" qos="+str(qos))
     client.publish(topic,msg,qos)
-
 def sub(client,topic,qos,s_msg):
     logging.info(s_msg+"  topic= "+topic +" qos="+str(qos))
-    client.subscribe(topic,qos)
+    client.subscribe(topic,qos)   
 
 qos_s=1
 qos_p=0
-QOS1=1
-QOS2=1
-
 
 broker="broker.emqx.io"
-topic1="UNITS"
-topic2="UNITS"
+topic1="UNITS1221"
+topic2="UNITS1222"
 
 print("Clear before start")
 CLEAN_SESSION=True
-client1 = mqtt.Client("Python1",clean_session=CLEAN_SESSION)
+client1 = mqtt.Client("Server647",clean_session=CLEAN_SESSION)
 client1.connect(broker,port,keepalive)      #connect to broker
 client1.disconnect()
 print("End Clear before start")
@@ -59,7 +58,7 @@ CLEAN_SESSION=True
 #print ("client1 is used to subscribe and client 2 to publish")
 print ("Test1: Test if broker remembers subcription with non clean session ")
 print ("Test1: Test that Messages with QOS of 0 are not stored for client ")
-client1 = mqtt.Client("Python1",clean_session=CLEAN_SESSION)    #create new instance
+client1 = mqtt.Client("Server647",clean_session=CLEAN_SESSION)    #create new instance
 client2 = mqtt.Client("Python2")    #create new instance 
 client1.on_message=on_message        #attach function to callback
 print("Connecting client 1 with clean session set to ",CLEAN_SESSION)
@@ -72,7 +71,7 @@ sub(client1,topic1,qos_s,"client1 subscribed")
 
 time.sleep(3)
 
-pub(client2,topic1,msg1,qos_p,"published message ")
+#pub(client2,topic1,msg1,qos_p,"published message ")
 
 time.sleep(2)
 inp=input("Waiting to continue:")
@@ -87,7 +86,7 @@ inp=input("Waiting to continue:")
 CLEAN_SESSION=False
 
 print("Connecting client 1 with clean session set to ",CLEAN_SESSION)
-client1 = mqtt.Client("Python1",clean_session=CLEAN_SESSION)    #create new instance
+client1 = mqtt.Client("Server647",clean_session=CLEAN_SESSION)    #create new instance
 
 client1.on_message=on_message        #attach function to callback
 client1.connect(broker,port,keepalive)      #connect to broker
@@ -131,9 +130,7 @@ for m in r_messages:
 if count==4:
     print("Test1 Passed")
 inp=input("Waiting to continue:")
-print ("Test2: Now test if broker stores messages with qos 1 \
-and above for disconnected client first subscribe with qos of \
-1 to new topic ",topic2)
+print ("Test2: Now test if broker stores messages with qos 1 and above for disconnected client first subscribe with qos of 1 to new topic ",topic2)
 inp=input("Waiting to continue:")
 qos_s=1
 qos_p=1
