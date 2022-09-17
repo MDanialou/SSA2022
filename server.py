@@ -7,6 +7,8 @@ def on_connect(client, userdata, flags, r_c):
     """Check connection"""
     if r_c == 0:
         print("Connected\n")
+        # Subscribe to TOPIC 1 with QOS = 1
+        sub(client, TOPIC1, QOSS)
     else:
         print("Not connected\n")
 
@@ -38,31 +40,28 @@ def sub(client, topic, qos):
     client.subscribe(topic, qos)
 
 
-# Set Variables for Server
+#Set Constants for server
 QOSS = 1
 BROKER = "broker.emqx.io"
 TOPIC1 = "UNITS1221"
 TOPIC2 = "UNITS1222"
 PORT = 1883
 CIPHER_KEY = b'70JZaJg4c5F7RIOhrSXNjq0Y0iGp1QtBy2gyVMSdHHY='
-cipher = Fernet(CIPHER_KEY)
+CIPHER = Fernet(CIPHER_KEY)
 
-inp = input("Welcome to the SSA prototype:\n Press Enter to connect to broker")
+inp = input("Welcome to the SSA prototype:\n Press Enter to connect to the broker")
 
-# Setup Client, connect to broker, and register callbacks to functions
+# Setup client, connect to broker, and register callbacks to functions
 client = mqtt.Client("ServerSSA")
 client.connect(BROKER, PORT)
 client.on_connect = on_connect
 client.on_message = on_message
-
-# Subscribe to TOPIC 1 with QOS = 1
-sub(client, TOPIC1, QOSS)
 
 # Check message buffers
 client.loop_start()
 time.sleep(2)
 
 # Give the user a way to end the program
-inp = input("\nWaiting to continue.  Press RETURN any time to end program)\n")
+inp = input("\nWaiting to continue.  Press RETURN at any time to end program)\n")
 print("Ending")
 client.loop_stop()

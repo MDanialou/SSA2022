@@ -8,6 +8,8 @@ def on_connect(client, userdata, flags, r_c):
     """Check connection"""
     if r_c == 0:
         print("Connected")
+        # Subscribe to TOPIC 2 with QOS = 1
+        sub(client, TOPIC2, QOSS)
     else:
         print("Not connected")
 
@@ -38,21 +40,22 @@ def pub(client, topic, msg, qos):
     time.sleep(4)
 
 
+#Set Constants for smart meter
 QOSS = 1
 BROKER = 'broker.emqx.io'
 TOPIC1 = "UNITS1221"
 TOPIC2 = "UNITS1222"
 PORT = 1883
 CIPHER_KEY = b'70JZaJg4c5F7RIOhrSXNjq0Y0iGp1QtBy2gyVMSdHHY='
-cipher = Fernet(CIPHER_KEY)
+CIPHER = Fernet(CIPHER_KEY)
 
-
+# Setup client, connect to broker, and register callbacks to functions
 client = mqtt.Client("Smart_Meter")
 client.connect(BROKER, PORT)
 client.on_connect = on_connect
 client.on_message = on_message
-sub(client, TOPIC2, QOSS)
 
+#Check message buffers
 while True:
     client.loop_start()
     time.sleep(2)
