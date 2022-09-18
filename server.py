@@ -6,6 +6,25 @@ import paho.mqtt.client as mqtt
 from cryptography.fernet import Fernet
 
 
+def authenticate():
+    """Check password file to authenticate, and authenticate if passed"""
+    pwd = input("Welcome to the SSA prototype:\n "
+                "Enter password to connect to broker: ")
+    pwfile = open("readpwd.txt", "r", encoding="utf-8")
+    if pwfile.readline() == pwd:
+        print("Authentication Passed!")
+        time.sleep(2)
+
+        # Setup client, connect to broker, and register callbacks to functions
+        client.connect(BROKER, PORT)
+        client.on_connect = on_connect
+        client.on_message = on_message
+    else:
+        print("Authentication failed - Ending program.")
+        time.sleep(4)
+        quit()
+
+
 def on_connect(client, userdata, flags, r_c):
     """Check connection"""
     if r_c == 0:
@@ -46,19 +65,16 @@ def sub(client, topic, qos):
 # Set Constants for server
 QOSS = 1
 BROKER = "broker.emqx.io"
-TOPIC1 = "UNITS1221"
-TOPIC2 = "UNITS1222"
+TOPIC1 = "UNITS1223"
+TOPIC2 = "UNITS1224"
 PORT = 1883
 CIPHER_KEY = b'70JZaJg4c5F7RIOhrSXNjq0Y0iGp1QtBy2gyVMSdHHY='
 CIPHER = Fernet(CIPHER_KEY)
 
-inp = input("Welcome to the SSA prototype:\n Press ENTER to connect to broker")
-
-# Setup client, connect to broker, and register callbacks to functions
+# Define server device
 client = mqtt.Client("ServerSSA")
-client.connect(BROKER, PORT)
-client.on_connect = on_connect
-client.on_message = on_message
+
+authenticate()
 
 # Check message buffers
 client.loop_start()

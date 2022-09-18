@@ -24,7 +24,8 @@ def on_message(client, userdata, message):
     then kick off publish function"""
     decrypted_message = CIPHER.decrypt(message.payload)
     msg = int(decrypted_message.decode("utf-8"))
-    print("Unit total from server = ", str(decrypted_message.decode("utf-8")))
+    print("Unit total confirmation from server" \
+          " = ", str(decrypted_message.decode("utf-8")))
     pub(client, TOPIC1, msg, QOSS)
 
 
@@ -46,17 +47,19 @@ def pub(client, topic, msg, qos):
 # Set Constants for smart meter
 QOSS = 1
 BROKER = 'broker.emqx.io'
-TOPIC1 = "UNITS1221"
-TOPIC2 = "UNITS1222"
+TOPIC1 = "UNITS1223"
+TOPIC2 = "UNITS1224"
 PORT = 1883
 CIPHER_KEY = b'70JZaJg4c5F7RIOhrSXNjq0Y0iGp1QtBy2gyVMSdHHY='
 CIPHER = Fernet(CIPHER_KEY)
+
 
 # Setup client, connect to broker, and register callbacks to functions
 client = mqtt.Client("Smart_Meter")
 client.connect(BROKER, PORT)
 client.on_connect = on_connect
 client.on_message = on_message
+
 
 # Check message buffers
 while True:
