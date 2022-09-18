@@ -66,8 +66,8 @@ def sub(client, topic, qos):
 # Set Constants for server
 QOSS = 1
 BROKER = "broker.emqx.io"
-TOPIC1 = "UNITS1221"
-TOPIC2 = "UNITS1222"
+TOPIC1 = "UNITS1223"
+TOPIC2 = "UNITS1224"
 PORT = 1883
 CIPHER_KEY = b'70JZaJg4c5F7RIOhrSXNjq0Y0iGp1QtBy2gyVMSdHHY='
 CIPHER = Fernet(CIPHER_KEY)
