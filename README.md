@@ -7,10 +7,6 @@ The following should be installed already before setup.
 - Python3 ([Download](https://www.python.org/) 3.6 or later.)
 
 ## <ins>Requirements</ins>
-- **paho-mqtt** (enable apps to connect to a MQTT broker in order to publish messages, as well as subscribe to topics and receive published messages) (paho-mqtt, 2022)
-- **cryptography** (contains standard cryptography methods including symmetric cyphers, message digests, and key derivation functions) (cryptography, 2022)
-- **fernet** (communication encrypted using it cannot be altered or read without the key) (Fernet (symmetric encryption), 2022)
-
 ```
 pip install -r requirements.txt
 ```
@@ -123,10 +119,6 @@ With this project, we’ve achieved confidentiality and availability to a certai
 
 Chen, F., Huo, Y., Zhu, J. and Fan, D., 2020. A Review on the Study on MQTT Security Challenge. 2020 IEEE International Conference on Smart Cloud (SmartCloud),.
 
-PyPI. 2022. cryptography. [online] Available at: <https://pypi.org/project/cryptography/> [Accessed 17 September 2022].
-
-Cryptography.io. 2022. Fernet (symmetric encryption). [online] Available at: <https://cryptography.io/en/latest/fernet/> [Accessed 16 September 2022].
-
 Fortinet (N.D.) Eavesdropping. Available from: https://www.fortinet.com/resources/cyberglossary/eavesdropping [Accessed 18 September 2022].
 
 Fortinet. (N.D.) What Is A Port Scan? How To Prevent Port Scan Attacks?. Available from: https://www.fortinet.com/resources/cyberglossary/what-is-port-scan [Accessed 18 September 2022].
@@ -148,8 +140,6 @@ Mohamed, T. S. (2019) Security of Multifactor Authentication Model to Improve Au
 Nife, F. & Kotulski, Z. (2020) Application-Aware Firewall Mechanism for Software Defined Networks. Journal of Network and Systems Management 28: 605-626 DOI: https://doi.org/10.1007/s10922-020-09518-z
 
 NIST (N.D.) man-in-the-middle attack (MitM). Available from https://csrc.nist.gov/glossary/term/man_in_the_middle_attack [Accessed 18 September 2022].
-
-PyPI. 2022. paho-mqtt. [online] Available at: <https://pypi.org/project/paho-mqtt/> [Accessed 18 September 2022].
 
 PortSwigger. (2019) SQL Injection. Available from: https://portswigger.net/web-security/sql-injection [Accessed 18 September 2022].
 
