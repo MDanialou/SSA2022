@@ -66,7 +66,7 @@ message retain flag= 0
 
 ## <ins>Design Document - Threats and Mitigations</ins>
 
-### **Threats**
+### **<ins>Threats:</ins>**
 
 | **Application Threats**    | **Description**                                                                                                                                              |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -91,7 +91,7 @@ message retain flag= 0
 | Access and Compromise of Devices. | Physical breach, damage or theft of devices |
 
 
-### **Threat Mitigations**
+### **<ins>Mitigations:</ins>**
 
 | **Application Threat Mitigations**                      | **Description**                                                                                                                                                           |
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -116,8 +116,13 @@ message retain flag= 0
 
 ## <ins>Reflection</ins>
 
-600 WORD REFLECTION - WORKING ON IT
+IoT is a novel architecture concept that enables data transfer and service delivery through networks. It enables users to transform everyday objects into smart devices capable of gathering data and performing tasks, aided by an increasing number of interconnected nodes.
+The shifting threat landscape and increased amount of sophisticated cyberattacks necessitate creative techniques to characterise and quantify risks to keep systems secure (Kordy et. al., 2014).
+An IoT network for a smart home has been presented with some threats mitigated. It includes a coordinator, smart video doorbell, and smart energy meter connected via LoRa and MQTT.
 
+A key consideration for this project was where the MQTT broker was hosted - publicly or privately. This would determine what technical controls could potentially be employed to mitigate threats. Only the devices you choose can publish to and subscribe to the topics on a private broker. This should be used for both production.  Any device can publish topics on a public broker and subscribe to those topics. There is no privacy, hence should be used for testing/prototyping (Chen, Huo, Zhu and Fan, 2020).
+
+As we selected a public broker, we inherited some security vulnerabilities that could be mitigated by a private broker. 
 
 |             Threats              | Mitigated (Y/N) |
 |:--------------------------------:|:---------------:|
