@@ -10,7 +10,6 @@ The following should be installed already before setup.
 - **paho-mqtt** (enable apps to connect to a MQTT broker in order to publish messages, as well as subscribe to topics and receive published messages) (paho-mqtt, 2022)
 - **cryptography** (contains standard cryptography methods including symmetric cyphers, message digests, and key derivation functions) (cryptography, 2022)
 - **fernet** (communication encrypted using it cannot be altered or read without the key) (Fernet (symmetric encryption), 2022)
-- **pandas** (data analysis and manipulation)
 
 ```
 pip install -r requirements.txt
@@ -64,84 +63,66 @@ message qos= 1
 message retain flag= 0
 ```
 
-## <ins>Design Document - Threats and Mitigations</ins>
+## <ins>Private Broker Program</ins>
 
-### **<ins>Threats:</ins>**
+***For users with private broker setup (e.g. Eclipse Mosquito)***
 
-| **Application Threats**    | **Description**                                                                                                                                              |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| SQL Injection              | Web application vulnerability allowing attackers to manipulate databases through queries (PortSwigger, 2019)                                                 |
-| Cross Site Scripting (XSS) | Malicious scripts injected into web forms giving unauthorised access to sensitive files such as session cookies, allowing session hijacking (KirstenS, 2020) |
-| Broken Authentication      | Exploits credentials allowing privileged account access (OWASP, 2017)                                                                                        |
-| Privilege Escalation       | Programming errors could allow attackers unauthorised access to applications and privileged resources (OWASP, 2020)                                          |
-
-| **Network Threats**              | **Description**                                                                                                                         |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Session Hijack                   | Exploits web session control mechanisms.  Gives unauthorised webserver access using compromised session tokens (OWASP, 2020)            |
-| Man in the Middle                | Attacker positioned between two communicating parties manipulates passing data, compromising integrity and confidentiality (NIST, N.D.) |
-| Wireless Key Compromise          | Wireless key obtained and used for unauthorised resource access                                                                         |
-| Eavesdropping                    | Hackers intercept unencrypted data transmitted between two devices (Fortinet, N.D.)                                                     |
-| Resource Exhaustion              | Exploits vulnerabilities, compromising service availability and rendering legitimate service unavailable (Antunes et al., 2008)         |
-| Port Scanning                    | Used to discover open services or weak entry points in networks and systems (Fortinet, N.D.)                                            |
-| Malicious Code Download          | Downloading harmful programs to exploit system vulnerabilities (Kaspersky, 2019)                                                        |
-| Connections from unknown devices | Connections of unsolicited devices, leaving the IoT network compromised                                                                 |
-
-| **Physical Threat**               | **Description**                             |
-| --------------------------------- | ------------------------------------------- |
-| Access and Compromise of Devices. | Physical breach, damage or theft of devices |
-
-
-### **<ins>Mitigations:</ins>**
-
-| **Application Threat Mitigations**                      | **Description**                                                                                                                                                           |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Layer 7 Firewall with DDoS capability                   | Firewall accepting traffic on ports but blocking traffic containing known vulnerabilities through deep packet inspection (Nife & Kotulski, 2020).  Can detect DoS attacks |
-| Input Validation / Sanitisation                         | Prevents execution of malicious queries designed for unauthorised data access (Levis et al., 2008)                                                                        |
-| Strict Authentication (Unique IDs and Strong Passwords) | Mitigates authentication-based attacks as attackers are less likely to guess user credentials                                                                             |
-| Multi Factor Authentication                             | Further mitigates unauthorised system access (Mohamed, 2019)                                                                                                              |
-| Standard User accounts with restricted privileges       | Limits the damage extent, if compromised                                                                                                                                  |
-
-| **Network Threat Mitigations**                                                | **Description**                                                                                    |
-| ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| WPA2 (or greater) Wireless Encryption                                         | Provides data encryption by TKIP which used strong encryption mechanisms (Malgaonkar et al., 2017) |
-| In-built TPM chip for IoT devices and coordinator                             | Supports cryptographic algorithms and secure boot on devices                                       |
-| Patch Management                                                              | Continuous mitigation of discovered IoT vulnerabilities                                            |
-| Credential hygiene (e.g., change default credentials and keeping them secret) | Minimises the chance of credentials being guessed.                                                 |
-
-| **Physical Threat Mitigations**      | **Description**                                                           |
-| ------------------------------------ | ------------------------------------------------------------------------- |
-| External door locks                  | Prevents unauthorised access to facilities where IoT equipment is located |
-| External walls and gate, if possible | Deters and delays intruders                                               |
-
+Client connect anonymously without TLS
+```
+mosquitto_sub -t test/topic -h <broker address>
+```
+Client connect with username and no password without TLS
+```
+mosquitto_sub -t test/topic -u <username> -h <broker address>
+```
+Client connect with username and password without TLS
+```
+mosquitto_sub -t test/topic -u <username> -P <password> -h <broker address>
+```
+Subscribe to the $SYS topic and see information about the broker
+```
+mosquitto_sub -t '$SYS/#' -v -h <broker address>
+```
+Client connect using TLS
+```
+mosquitto_sub -t test/topic -h <broker address> -p 8883 --capath /etc/ssl/certs
+```
+Client subscribes to all topics
+```
+mosquitto_sub -t '#' -v
+```
+*Repeat all the above when publishing as well.*
 
 ## <ins>Reflection</ins>
 
-IoT is a novel architecture concept that enables data transfer and service delivery through networks. It enables users to transform everyday objects into smart devices capable of gathering data and performing tasks, aided by an increasing number of interconnected nodes.
-The shifting threat landscape and increased amount of sophisticated cyberattacks necessitate creative techniques to characterise and quantify risks to keep systems secure (Kordy et. al., 2014).
-An IoT network for a smart home has been presented with some threats mitigated. It includes a coordinator, smart video doorbell, and smart energy meter connected via LoRa and MQTT.
+IoT is a novel architecture concept that enables data transfer and service delivery through networks. It enables users to transform everyday objects into smart devices capable of gathering data and performing tasks, aided by an increasing number of interconnected nodes. The shifting threat landscape and increased amount of sophisticated cyberattacks necessitate creative techniques to characterise and quantify risks to keep systems secure (Kordy et. al., 2014). An IoT network for a smart home has been presented with some threats mitigated. It includes a coordinator, smart video doorbell, and smart energy meter connected via LoRa and MQTT.
 
-A key consideration for this project was where the MQTT broker was hosted - publicly or privately. This would determine what technical controls could potentially be employed to mitigate threats. Only the devices you choose can publish to and subscribe to the topics on a private broker. This should be used for both production.  Any device can publish topics on a public broker and subscribe to those topics. There is no privacy, hence should be used for testing/prototyping (Chen, Huo, Zhu and Fan, 2020).
+Find below threats, how they apply to our IoT network, and mitigation techniques.
 
-As we selected a public broker, we inherited some security vulnerabilities that could be mitigated by a private broker. 
+| **Threats**                      | **Vulnerable (Y/N)** | **Mitigation Details**                                                                                                             |
+| -------------------------------- | -------------------- |------------------------------------------------------------------------------------------------------------------------------------|
+| SQL Injection                    | N                    | \- No database is being used in this project                                                                                       |
+| Cross Site Scripting (XSS)       | N                    | \- No front-end development                                                                                                        |
+| Broken Authentication            | N                    | \- User is prompted to enter a password when connecting to the broker<br/>\- Cipher key being used to encrypt and decrypt messages |
+| Privilege Escalation             | N                    | \- User is prompted to enter a password when connecting to the broker                                                              |
+| Session Hijack                   | Y                    | \- Public brokers don’t support security certificates to provide authorization                                                     |
+| Man in the Middle                | Y                    | \- Public brokers don’t support security certificates to provide authorization                                                     |
+| Wireless Key Compromise          | N                    | \- Not applicable for this project                                                                                                 |
+| Eavesdropping                    | Y                    | \- Although on an unsecured port (1833), cipher key being used to encrypt and decrypt messages provide confidentiality             |
+| Resource Exhaustion              | N                    | \- If an incorrect password is entered, the program ends                                                                           |
+| Port Scanning                    | Y                    | \- Using unsecured MQTT port 1833 for transmission as MQTT over SSL on port 8883 is not supported on public brokers                |
+| Malicious Code Scanning          | Y                    | \- Malware tools are not being used                                                                                                |
+| Connections from unknown devices | N                    | \- User is prompted to enter a password when connecting to the broker<br/>\- Cipher key being used to encrypt and decrypt messages |
+| Access and Compromise of Devices | N                    | \- No physical devices                                                                                                             |
 
-|             Threats              | Mitigated (Y/N) |
-|:--------------------------------:|:---------------:|
-|          SQL Injection           |        N        |
-|    Cross Site Scripting (XSS)    |        N        |
-|      Broken Authentication       |        N        |
-|       Privilege Escalation       |        N        |
-|          Session Hijack          |        N        |
-|        Man in the Middle         |        Y        |    
-|     Wireless Key Compromise      |        N        |
-|          Eavesdropping           |        Y        |
-|       Resource Exhaustion        |        Y        |
-|          Port Scanning           |        Y        |
-|     Malicious Code Scanning      |        Y        |
-| Connections from unknown devices |        Y        |
-| Access and Compromise of Devices |        Y        |
+A key consideration for this project was where the MQTT broker was hosted - publicly or privately. This determined what technical controls could be employed to mitigate threats based on the inherited vulnerabilities of the MQTT broker. Only the devices you choose can publish to and subscribe to the topics on a private broker. Use this for both production and prototyping. Any device can publish topics on a public broker and subscribe to those topics. There is no privacy, hence should not be used for production, instead for testing/prototyping (Chen, Huo, Zhu and Fan, 2020).
+
+With this project, we’ve achieved confidentiality and availability to a certain degree and lacked in developing controls to strengthen the integrity of our IoT network. This was primarily because we’re using a public MQTT broker and couldn’t configure the broker disabling us from leveraging other security controls. On a private broker, additional security measures could mitigate threats the project is vulnerable to  – TLS with certificate credentials for all connections (providing secure authentication and authorization), only TCP/IP ports 8883 would be open on the server (secure MQTT protocol), and limiting MQTT publishing and subscribing (prevent resource exhaustion, assuring availability).
 
 
 ## <ins>References</ins>
+
+Chen, F., Huo, Y., Zhu, J. and Fan, D., 2020. A Review on the Study on MQTT Security Challenge. 2020 IEEE International Conference on Smart Cloud (SmartCloud),.
 
 PyPI. 2022. cryptography. [online] Available at: <https://pypi.org/project/cryptography/> [Accessed 17 September 2022].
 
