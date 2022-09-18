@@ -1,18 +1,23 @@
 # SSA_PCOM7E | DEVELOPMENT TEAM PROJECT - CODE DEVELOPMENT
 
----
+----
 
-# Prerequisite
+## Prerequisite
 The following should be installed already before setup.
 - Python3 ([Download](https://www.python.org/) 3.6 or later.)
 
-# Requirements
+## Requirements
+- **paho-mqtt** (enable apps to connect to a MQTT broker in order to publish messages, as well as subscribe to topics and receive published messages) (paho-mqtt, 2022)
+- **cryptography** (contains standard cryptography methods including symmetric cyphers, message digests, and key derivation functions) (cryptography, 2022)
+- **fernet** (communication encrypted using it cannot be altered or read without the key) (Fernet (symmetric encryption), 2022)
+- **pandas** (data analysis and manipulation)
+
 ```
 pip install -r requirements.txt
 ```
 
-# Programs
-Running in Linux or Windows from the downloaded directory.
+## Programs
+***Running in Linux or Windows from the downloaded directory.***
 
 Run to begin publishing encrypted meter data to the public broker:
 ```
@@ -58,3 +63,33 @@ message topic= UNITS1221
 message qos= 1
 message retain flag= 0
 ```
+
+## Security Control Reflection
+
+600 WORD REFLECTION - WORKING ON IT
+
+### **Threats**
+
+|             Threats              | Mitigated (Y/N) |
+|:--------------------------------:|:---------------:|
+|          SQL Injection           |        N        |
+|    Cross Site Scripting (XSS)    |        N        |
+|      Broken Authentication       |        N        |
+|       Privilege Escalation       |        N        |
+|          Session Hijack          |        N        |
+|        Man in the Middle         |        Y        |    
+|     Wireless Key Compromise      |        N        |
+|          Eavesdropping           |        Y        |
+|       Resource Exhaustion        |        Y        |
+|          Port Scanning           |        Y        |
+|     Malicious Code Scanning      |        Y        |
+| Connections from unknown devices |        Y        |
+| Access and Compromise of Devices |        Y        |
+
+## References
+
+PyPI. 2022. cryptography. [online] Available at: <https://pypi.org/project/cryptography/> [Accessed 17 September 2022].
+
+Cryptography.io. 2022. Fernet (symmetric encryption). [online] Available at: <https://cryptography.io/en/latest/fernet/> [Accessed 16 September 2022].
+
+PyPI. 2022. paho-mqtt. [online] Available at: <https://pypi.org/project/paho-mqtt/> [Accessed 18 September 2022].
