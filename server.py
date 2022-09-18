@@ -2,11 +2,12 @@
 from the smart meter via the public broker
 """
 import time
+import sys
 import paho.mqtt.client as mqtt
 from cryptography.fernet import Fernet
 
 
-def authenticate():
+def authenticate(client):
     """Check password file to authenticate, and authenticate if passed"""
     pwd = input("Welcome to the SSA prototype:\n "
                 "Enter password to connect to broker: ")
@@ -22,7 +23,7 @@ def authenticate():
     else:
         print("Authentication failed - Ending program.")
         time.sleep(4)
-        quit()
+        sys.exit()
 
 
 def on_connect(client, userdata, flags, r_c):
@@ -65,22 +66,22 @@ def sub(client, topic, qos):
 # Set Constants for server
 QOSS = 1
 BROKER = "broker.emqx.io"
-TOPIC1 = "UNITS1223"
-TOPIC2 = "UNITS1224"
+TOPIC1 = "UNITS1221"
+TOPIC2 = "UNITS1222"
 PORT = 1883
 CIPHER_KEY = b'70JZaJg4c5F7RIOhrSXNjq0Y0iGp1QtBy2gyVMSdHHY='
 CIPHER = Fernet(CIPHER_KEY)
 
 # Define server device
-client = mqtt.Client("ServerSSA")
+CLIENT = mqtt.Client("ServerSSA")
 
-authenticate()
+authenticate(CLIENT)
 
 # Check message buffers
-client.loop_start()
+CLIENT.loop_start()
 time.sleep(2)
 
 # Give the user a way to end the program
 inp = input("\nWaiting to continue.  Press ENTER any time to end program)\n")
 print("Ending")
-client.loop_stop()
+CLIENT.loop_stop()
