@@ -69,16 +69,16 @@ See below threats, how they apply to the IoT network, and mitigation techniques.
 | -------------------------------- | -------------------- |------------------------------------------------------------------------------------------------------------------------------------|
 | SQL Injection                    | N                    | \- No database is being used
 | Cross Site Scripting (XSS)       | N                    | \- No front-end development                                                                                        
-| Broken Authentication            | Y                    | \- User is prompted to enter a password when connecting to the broker, however it could be further stored                                                                  in hashed or encrypted form<br/>\- Cipher key being used to encrypt and decrypt messages|
-| Privilege Escalation             | N                    | \- User is prompted to enter a password when connecting to the broker<br/>\- Minimal commands are allowable                                                                to the user (least privilege)
+| Broken Authentication            | Y                    | \- User is prompted to enter a password when connecting to the broker, however it could be further stored in hashed or encrypted form<br/>\- Cipher key being used to encrypt and decrypt messages|
+| Privilege Escalation             | N                    | \- User is prompted to enter a password when connecting to the broker<br/>\- Minimal commands are allowable to the user (least privilege)
 | Session Hijack                   | Y                    | \- Public brokers do not support security certificates for authorisation                                                     
 | Man in the Middle                | Y                    | \- Public brokers don’t support security certificates for authorisation                                                     
 | Wireless Key Compromise          | N                    | \- Not applicable for this project                                                                                                 
-| Eavesdropping                    | N                    | \- Although on an unsecured port (1833), cipher key being used to encrypt and decrypt messages provide                                                                    confidentiality             
-| Resource Exhaustion              | N                    | \- If an incorrect password is entered, the program ends<br/>\- The broker only stored maximum 1 message |
-| Port Scanning                    | Y                    | \- Using unsecured MQTT port 1833 for transmission as MQTT over SSL on port 8883 is not supported on public                                                                brokers                
-| Malicious Code Scanning          | Y                    | \- Malware tools are not being used                                                                                                |
-| Connections from unknown devices | N                    | \- User is prompted to enter a password when connecting to the broker<br/>\- Cipher key being used to                                                                      encrypt and decrypt messages
+| Eavesdropping                    | N                    | \- Although on an unsecured port (1833), cipher key being used to encrypt and decrypt messages provide confidentiality             
+| Resource Exhaustion              | N                    | \- If an incorrect password is entered, the program ends<br/>\- The broker only stored maximum 1 message
+| Port Scanning                    | Y                    | \- Using unsecured MQTT port 1833 for transmission as MQTT over SSL on port 8883 is not supported on public brokers                
+| Malicious Code Scanning          | Y                    | \- Malware tools are not being used
+| Connections from unknown devices | N                    | \- User is prompted to enter a password when connecting to the broker<br/>\- Cipher key being used to encrypt and decrypt messages
 | Access and Compromise of Devices | N                    | \- No physical devices                                                                                     
 
 
