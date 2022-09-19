@@ -84,36 +84,4 @@ message payload =  b'gAAAAABjJh-kBWxOWLFy3DZezipMXjHoGF0IvfvwabG7JD66KQusZ3Y0Uze
 Total Units =  52
 Total Cost (@£0.00039 per unit): £ 0.0203
 message topic= UNITS1221
-message qos= 1
-message retain flag= 0
 ```
-
-## <ins>Private Broker Program</ins>
-
-***For users with private broker setup (e.g. Eclipse Mosquito)***
-
-Client connect anonymously without TLS
-```
-mosquitto_sub -t test/topic -h <broker address>
-```
-Client connect with username and no password without TLS
-```
-mosquitto_sub -t test/topic -u <username> -h <broker address>
-```
-Client connect with username and password without TLS
-```
-mosquitto_sub -t test/topic -u <username> -P <password> -h <broker address>
-```
-Subscribe to the $SYS topic and see information about the broker
-```
-mosquitto_sub -t '$SYS/#' -v -h <broker address>
-```
-Client connect using TLS
-```
-mosquitto_sub -t test/topic -h <broker address> -p 8883 --capath /etc/ssl/certs
-```
-Client subscribes to all topics
-```
-mosquitto_sub -t '#' -v
-```
-*Repeat all the above when publishing as well.*
