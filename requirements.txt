@@ -2,11 +2,10 @@
 
 #Libraries
 
-
+paho-mqtt
 cryptography
 fernet
-getpass
-paho-mqtt
-random
-sys
-time
+
+# Testing
+flake8
+pylint

@@ -47,8 +47,8 @@ def pub(client, topic, msg, qos):
 # Set Constants for smart meter
 QOSS = 1
 BROKER = 'broker.emqx.io'
-TOPIC1 = "UNITS1223"
-TOPIC2 = "UNITS1224"
+TOPIC1 = "UNITS1221"
+TOPIC2 = "UNITS1222"
 PORT = 1883
 CIPHER_KEY = b'70JZaJg4c5F7RIOhrSXNjq0Y0iGp1QtBy2gyVMSdHHY='
 CIPHER = Fernet(CIPHER_KEY)

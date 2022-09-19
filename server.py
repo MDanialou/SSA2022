@@ -3,14 +3,16 @@ from the smart meter via the public broker
 """
 import time
 import sys
+import getpass
 import paho.mqtt.client as mqtt
 from cryptography.fernet import Fernet
 
 
 def authenticate(client):
     """Check password file to authenticate, and authenticate if passed"""
-    pwd = input("Welcome to the SSA prototype:\n "
-                "Enter password to connect to broker: ")
+    # Hide password while entering
+    pwd = getpass.getpass("Welcome to the SSA prototype:\n "
+                          "Enter password to connect to broker: ")
     pwfile = open("readpwd.txt", "r", encoding="utf-8")
     if pwfile.readline() == pwd:
         print("Authentication Passed!")
@@ -66,8 +68,8 @@ def sub(client, topic, qos):
 # Set Constants for server
 QOSS = 1
 BROKER = "broker.emqx.io"
-TOPIC1 = "UNITS1223"
-TOPIC2 = "UNITS1224"
+TOPIC1 = "UNITS1221"
+TOPIC2 = "UNITS1222"
 PORT = 1883
 CIPHER_KEY = b'70JZaJg4c5F7RIOhrSXNjq0Y0iGp1QtBy2gyVMSdHHY='
 CIPHER = Fernet(CIPHER_KEY)
