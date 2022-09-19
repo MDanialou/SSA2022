@@ -5,6 +5,7 @@
 paho-mqtt
 cryptography
 fernet
-fernettime
+time
+getpass
 sys
 random
